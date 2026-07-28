@@ -6,23 +6,27 @@ function generateId(): string {
 }
 
 let tasks: Task[] = [
-  { id: generateId(), text: 'Cumpara lapte', selected: false, completed: false },
-  { id: generateId(), text: 'Spala vasele', selected: false, completed: false },
-  { id: generateId(), text: 'Scrie raportul saptamanal', selected: false, completed: false },
-  { id: generateId(), text: 'Plimba cainele', selected: false, completed: false },
+  { id: generateId(), text: 'Cumpara lapte', selected: false, completed: false,min:0,sec:0,hour:0,deleted:false },
+  { id: generateId(), text: 'Spala vasele', selected: false, completed: false,min:0,sec:0,hour:0,deleted:false },
+  { id: generateId(), text: 'Scrie raportul saptamanal', selected: false, completed: false,min:0,sec:0,hour:0,deleted:false },
+  { id: generateId(), text: 'Plimba cainele', selected: false, completed: false,min:0,sec:0,hour:0,deleted:false},
 ];
 
 class TasksService {
   getPendingTasks(): Promise<Task[]> {
-    return Promise.resolve(tasks.filter((task) => !task.completed));
+    return Promise.resolve(tasks.filter((task) => !task.completed && !task.deleted));
   }
 
   getCompletedTasks(): Promise<Task[]> {
-    return Promise.resolve(tasks.filter((task) => task.completed));
+    return Promise.resolve(tasks.filter((task) => task.completed && !task.deleted));
+  }
+
+  getDeletedTasks(): Promise<Task[]> {
+    return Promise.resolve(tasks.filter((task) => task.deleted));
   }
 
   addTask(text: string): Promise<Task> {
-    const task: Task = { id: generateId(), text, selected: false, completed: false };
+    const task: Task = { id: generateId(), text, selected: false, completed: false, min: 0, sec: 0, hour: 0, deleted: false };
     tasks = [...tasks, task];
     return Promise.resolve(task);
   }
@@ -42,9 +46,13 @@ class TasksService {
   }
 
   deleteTasks(ids: string[]): Promise<void> {
-    tasks = tasks.filter((task) => !ids.includes(task.id));
+    let date=new Date();
+   tasks = tasks.map((task) =>
+      ids.includes(task.id) ? { ...task, deleted:true,min:date.getMinutes(),sec:date.getSeconds(),hour:date.getHours() } : task,
+    );
     return Promise.resolve();
   }
+  
 }
 
 export const tasksService = new TasksService();

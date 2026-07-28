@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { TaskItem } from '../components/TaskItem';
+import {SelectItem} from '../components/SelectItem';
 import { tasksService } from '../services/TasksService';
 import type { Task } from '../types/Task';
 
@@ -30,7 +31,7 @@ export function TaskListScreen() {
     loadTasks();
   }
 
-  async function handleToggle(id: string) {
+   async function handleToggle(id: string) {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
     await tasksService.setSelected(id, !task.selected);
@@ -61,11 +62,14 @@ export function TaskListScreen() {
         data={tasks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TaskItem
+          <SelectItem
             id={item.id}
             text={item.text}
             selected={item.selected}
             onToggle={handleToggle}
+            min={item.min}
+            sec={item.sec}
+            hour={item.hour}
           />
         )}
         ListEmptyComponent={<Text style={styles.empty}>Niciun task</Text>}

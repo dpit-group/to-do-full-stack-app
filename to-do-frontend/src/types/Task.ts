@@ -3,4 +3,8 @@ export type Task = {
   text: string;
   selected: boolean;
   completed: boolean;
+  deleted:boolean
+  min:number;
+  sec:number;
+  hour:number;
 };

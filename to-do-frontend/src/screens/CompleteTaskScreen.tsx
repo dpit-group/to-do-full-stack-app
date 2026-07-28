@@ -4,7 +4,7 @@ import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { TaskItem } from '../components/TaskItem';
 import { tasksService } from '../services/TasksService';
 import type { Task } from '../types/Task';
-
+import {SelectItem} from '../components/SelectItem';
 export function CompleteTaskScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -15,10 +15,12 @@ export function CompleteTaskScreen() {
   useFocusEffect(loadTasks);
 
   async function handleToggle(id: string) {
+
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
     await tasksService.setSelected(id, !task.selected);
     loadTasks();
+    
   }
 
   async function handleDelete() {
@@ -34,11 +36,14 @@ export function CompleteTaskScreen() {
         data={tasks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TaskItem
-            id={item.id}
+          <SelectItem
+           id={item.id}
             text={item.text}
             selected={item.selected}
             onToggle={handleToggle}
+            min={item.min}
+            sec={item.sec}
+            hour={item.hour}
           />
         )}
         ListEmptyComponent={<Text style={styles.empty}>Niciun task finalizat</Text>}
