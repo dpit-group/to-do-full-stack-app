@@ -6,13 +6,27 @@ type TaskItemProps = {
   text: string;
   selected: boolean;
   onToggle: (id: string) => void;
+  subtitle?: string;
+  showCheckbox?: boolean;
 };
 
-export function TaskItem({ id, text, selected, onToggle }: TaskItemProps) {
+export function TaskItem({
+  id,
+  text,
+  selected,
+  onToggle,
+  subtitle,
+  showCheckbox = true,
+}: TaskItemProps) {
   return (
     <View style={styles.row}>
-      <Checkbox value={selected} onValueChange={() => onToggle(id)} />
-      <Text style={styles.text}>{text}</Text>
+      {showCheckbox ? (
+        <Checkbox value={selected} onValueChange={() => onToggle(id)} />
+      ) : null}
+      <View style={styles.textColumn}>
+        <Text style={styles.text}>{text}</Text>
+        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+      </View>
     </View>
   );
 }
@@ -25,8 +39,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#ccc',
   },
-  text: {
+  textColumn: {
+    flex: 1,
     marginLeft: 12,
+  },
+  text: {
     fontSize: 16,
+  },
+  subtitle: {
+    marginTop: 2,
+    fontSize: 12,
+    color: '#666',
   },
 });

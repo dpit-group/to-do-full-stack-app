@@ -3,4 +3,6 @@ export type Task = {
   text: string;
   selected: boolean;
   completed: boolean;
+  deleted: boolean;
+  deletedAt: string;
 };
