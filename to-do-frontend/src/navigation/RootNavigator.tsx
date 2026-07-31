@@ -2,10 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CompleteTaskScreen } from '../screens/CompleteTaskScreen';
 import { TaskListScreen } from '../screens/TaskListScreen';
+import { DeletedTaskScreen } from '../screens/DeletedTaskScreen';
 
 export type RootTabParamList = {
   TaskList: undefined;
   CompleteTask: undefined;
+  DeletedTask: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -30,6 +32,16 @@ export function RootNavigator() {
           title: 'Completed',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="checkmark-done" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="DeletedTask"
+        component={DeletedTaskScreen}
+        options={{
+          title: 'Deleted',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="trash" color={color} size={size} />
           ),
         }}
       />
