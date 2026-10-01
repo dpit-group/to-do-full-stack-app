@@ -1,9 +1,9 @@
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import { TaskItem } from '../components/TaskItem';
-import { tasksService } from '../services/TasksService';
-import type { Task } from '../types/Task';
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { TaskItem } from "../components/TaskItem";
+import { tasksService } from "../services/TasksService";
+import type { Task } from "../types/Task";
 
 export function CompleteTaskScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -41,7 +41,9 @@ export function CompleteTaskScreen() {
             onToggle={handleToggle}
           />
         )}
-        ListEmptyComponent={<Text style={styles.empty}>Niciun task finalizat</Text>}
+        ListEmptyComponent={
+          <Text style={styles.empty}>Niciun task finalizat</Text>
+        }
       />
 
       <View style={styles.deleteRow}>
@@ -60,8 +62,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   empty: {
-    textAlign: 'center',
-    color: '#888',
+    textAlign: "center",
+    color: "#888",
     marginTop: 24,
   },
 });
