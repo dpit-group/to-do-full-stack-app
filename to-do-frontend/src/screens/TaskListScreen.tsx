@@ -1,5 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   FlatList,
@@ -7,14 +7,14 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import { TaskItem } from '../components/TaskItem';
-import { tasksService } from '../services/TasksService';
-import type { Task } from '../types/Task';
+} from "react-native";
+import { TaskItem } from "../components/TaskItem";
+import { tasksService } from "../services/TasksService";
+import type { Task } from "../types/Task";
 
 export function TaskListScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const loadTasks = useCallback(() => {
     tasksService.getPendingTasks().then(setTasks);
@@ -25,7 +25,7 @@ export function TaskListScreen() {
   async function handleAdd() {
     const text = input.trim();
     if (!text) return;
-    setInput('');
+    setInput("");
     await tasksService.addTask(text);
     loadTasks();
   }
@@ -43,6 +43,20 @@ export function TaskListScreen() {
     await tasksService.markCompleted(ids);
     loadTasks();
   }
+
+  useEffect(() => {
+    tasksService
+      .getAll()
+      .then((data) => {
+        console.log("Taskuri primite de service: ", data);
+        setTasks(data);
+      })
+      .catch((err) => {
+        console.error("Eroare la încărcarea taskurilor:", err);
+        console.error("Nu am putut încărca taskurile");
+      })
+      .finally(() => console.log("Încărcarea taskurilor finalizată"));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -84,15 +98,15 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
     gap: 8,
   },
   input: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 6,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -101,8 +115,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   empty: {
-    textAlign: 'center',
-    color: '#888',
+    textAlign: "center",
+    color: "#888",
     marginTop: 24,
   },
 });
